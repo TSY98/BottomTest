@@ -22,6 +22,9 @@
         <activity android:name=".ui.notifications.AddScheduleActivity" />
         <activity android:name=".ui.notifications.DetailScheduleActivity" />
         <activity android:name=".ui.notifications.EditScheduleActitivy" />
+        <activity android:name=".ui.dashboard.DetailDiaryActivity" />
+        <activity android:name=".ui.dashboard.EditDiaryActivity" />
+        <activity android:name=".ui.dashboard.WriteDairyActivity" />
     </application>
 
 </manifest>

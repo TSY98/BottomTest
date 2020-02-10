@@ -4,11 +4,13 @@
 
     </dbname>
 
-    <version value='1' >
+    <version value='2' >
 
     </version>
 
     <list>
+        <mapping class="com.example.bottomtest.ui.dashboard.DiaryContent" >
+        </mapping>
         <mapping class="com.example.bottomtest.ui.notifications.ScheduleInfo" >
         </mapping>
     </list>
