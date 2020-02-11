@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bottomtest">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="org.litepal.LitePalApplication"
@@ -25,6 +26,8 @@
         <activity android:name=".ui.dashboard.DetailDiaryActivity" />
         <activity android:name=".ui.dashboard.EditDiaryActivity" />
         <activity android:name=".ui.dashboard.WriteDairyActivity" />
+        <activity android:name=".ui.home.WeatherActivity" />
+        <activity android:name=".ui.home.WeatherMainActivity" />
     </application>
 
 </manifest>

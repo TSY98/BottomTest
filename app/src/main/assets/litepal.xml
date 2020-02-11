@@ -4,7 +4,7 @@
 
     </dbname>
 
-    <version value='2' >
+    <version value='4' >
 
     </version>
 
@@ -12,6 +12,14 @@
         <mapping class="com.example.bottomtest.ui.dashboard.DiaryContent" >
         </mapping>
         <mapping class="com.example.bottomtest.ui.notifications.ScheduleInfo" >
+        </mapping>
+        <mapping class="com.example.bottomtest.ui.home.db.City">
+        </mapping>
+        <mapping class="com.example.bottomtest.ui.home.db.County">
+        </mapping>
+        <mapping class="com.example.bottomtest.ui.home.db.Province">
+        </mapping>
+        <mapping class="com.example.bottomtest.ui.User" >
         </mapping>
     </list>
 

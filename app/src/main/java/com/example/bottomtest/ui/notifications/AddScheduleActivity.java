@@ -113,7 +113,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 if(flag==1){
                     scheduleInfo.save();
                     //跳转到显示界面
-//                    Intent intent = new Intent(AddScheduleActivity.this, MainActivity.class);
+//                    Intent intent = new Intent(AddScheduleActivity.this, WeatherMainActivity.class);
 //                    intent.putExtra("mainselected", "3");
 //                    startActivity(intent);
                     Toast.makeText(AddScheduleActivity.this, "成功插入", Toast.LENGTH_LONG).show();

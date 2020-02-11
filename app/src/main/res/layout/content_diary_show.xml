@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/show_diary_total"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/show_diary_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="15dp">
+    <TextView
+        android:id="@+id/show_diary_title"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="厦门一日游"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/show_diary_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:maxLines="4"
+        android:ellipsize="end"
+        android:text="2018年9月，与组合ONEWE合作发行单曲《LAST SONG》。2019年1月，凭借首张迷你专辑《LIGHT US》正式出道 ；5月，发行第二张迷你专辑《RAISE US》；8月，随组合获得第3届Soribada最佳音乐大奖Next Artist奖 。"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/show_diary_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020年2月11日 14:08"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="12dp"
+        android:maxLines="1"
+        android:textSize="12sp"
+        android:layout_marginBottom="10dp"/>
+
+</LinearLayout>

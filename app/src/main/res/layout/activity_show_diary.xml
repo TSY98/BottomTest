@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-
-
-
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <include layout="@layout/content_show_diary"/>
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:backgroundTint="@color/colorPrimary"
-        android:layout_margin="@dimen/default_horizontal_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/cardview_light_background"
+        android:gravity="center" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="日记列表"
+            android:textSize="20sp"/>
+    </RelativeLayout>
+    <ScrollView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/show_diary_recycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="end">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/show_diary_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/default_horizontal_margin"
+            android:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@android:drawable/ic_input_add" />
+    </LinearLayout>
+</LinearLayout>

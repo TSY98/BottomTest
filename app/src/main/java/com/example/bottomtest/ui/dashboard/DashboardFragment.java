@@ -16,6 +16,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.bottomtest.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,55 +32,51 @@ public class DashboardFragment extends Fragment {
 
     public final int WRITEDNEWDIART = 4;
 
-    //只显示标题和日期
-    public List<String> data = new ArrayList<>();
-    public ListView showDiary;
+    private RecyclerView showDiaryRV;
+    private List<DiaryContent> mDiary = new ArrayList<>();
+    private FloatingActionButton newDiary;
+    private DiaryAdapter diaryAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.activity_show_diary, container, false);
 
-        FloatingActionButton fab=root.findViewById(R.id.fab);
-        showDiary = root.findViewById(R.id.showDiary);
+        List<DiaryContent> diaryContents = DataSupport.findAll(DiaryContent.class);
+        mDiary.addAll(diaryContents);
+        showDiaryRV = root.findViewById(R.id.show_diary_recycle);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        showDiaryRV.setLayoutManager(staggeredGridLayoutManager);
+        diaryAdapter = new DiaryAdapter(mDiary);
+        showDiaryRV.setAdapter(diaryAdapter);
 
-        //将历史内容显示出来
-        final List<DiaryContent> contents = DataSupport.findAll(DiaryContent.class);
-        for (DiaryContent content : contents) {
-            data.add(content.getPointMassage());
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, data);
-        showDiary.setAdapter(adapter);
-
-        //list的点击事件
-        showDiary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //跳转到详细界面
-                DiaryContent diaryContent = contents.get(position);
-                Intent intent = new Intent(getActivity(), DetailDiaryActivity.class);
-                intent.putExtra("DiaryContent",diaryContent);
-                startActivity(intent);
-            }
-        });
-
-
-        //增加新日志
-        fab.setOnClickListener(new View.OnClickListener() {
+        newDiary = root.findViewById(R.id.show_diary_fab);
+        newDiary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //跳转到增加新日志的界面
                 Intent intent = new Intent(getActivity(), WriteDairyActivity.class);
-                startActivityForResult(intent,WRITEDNEWDIART);
+                startActivityForResult(intent,1);
             }
         });
 
+        diaryAdapter.setOnitemClickLintener(new DiaryAdapter.OnitemClick() {
+            @Override
+            public void onItemClick(int position) {
+                DiaryContent diaryContent = mDiary.get(position);
+                Intent intent = new Intent(getActivity(), DetailDiaryActivity.class);
+                intent.putExtra("DiaryContent",diaryContent);
+                startActivityForResult(intent,1);
+            }
+        });
         return root;
     }
 
     @Override
    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        List<DiaryContent> diaryContents = DataSupport.findAll(DiaryContent.class);
+        mDiary.clear();
+        mDiary.addAll(diaryContents);
+        diaryAdapter.notifyDataSetChanged();
     }
 }
