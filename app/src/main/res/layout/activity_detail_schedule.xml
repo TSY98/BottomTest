@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:text="查看日程"
             android:gravity="center"
-            android:textSize="22sp"/>
+            android:textSize="20sp"/>
 
     </RelativeLayout>
 
@@ -168,8 +168,31 @@
             android:layout_marginLeft="3dp"/>
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/remindTime"
         android:layout_below="@+id/isdone_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="提醒时间："/>
+        <TextView
+            android:id="@+id/show_diary_remindTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="18时55分"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/remindTime"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom">

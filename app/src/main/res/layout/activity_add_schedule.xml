@@ -20,6 +20,14 @@
             android:layout_alignParentLeft="true"
             android:background="@drawable/ic_back"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="增加新日程"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
         <Button
             android:id="@+id/edit_sche_edit_done"
             android:layout_width="30dp"

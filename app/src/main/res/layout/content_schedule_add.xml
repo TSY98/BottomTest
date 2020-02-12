@@ -9,14 +9,14 @@
 
     <EditText
         android:id="@+id/edit_sche_title"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:hint="输入日程名称"
         android:textColor="#555353"/>
 
     <TextView
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="重要程度："
@@ -32,21 +32,21 @@
            android:orientation="horizontal">
            <RadioButton
                android:id="@+id/edit_sche_radio_imp"
-               android:layout_margin="10dp"
+               android:layout_margin="15dp"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:textSize="20sp"
                android:text="重要"/>
            <RadioButton
                android:id="@+id/edit_sche_radio_mid"
-               android:layout_margin="10dp"
+               android:layout_margin="15dp"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:textSize="20sp"
                android:text="一般"/>
            <RadioButton
                android:id="@+id/edit_sche_radio_easy"
-               android:layout_margin="10dp"
+               android:layout_margin="15dp"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:textSize="20sp"
@@ -57,13 +57,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:text="备注："
         android:textSize="20sp" />
 
     <EditText
         android:id="@+id/edit_sche_remark"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -73,16 +73,16 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="时间："
+            android:text="日程日期："
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/sche_edit_time"
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#fff"
@@ -94,10 +94,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:orientation="horizontal">
         <TextView
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="20sp"
@@ -108,12 +108,38 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="end"
-            android:layout_margin="10dp">
+            android:layout_margin="15dp">
             <com.suke.widget.SwitchButton
                 android:id="@+id/switch_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/set_remark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_margin="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="提醒时间："
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/sche_edit_remind_time"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:gravity="center"
+            android:text="请选择提醒时间"
+            android:textSize="20sp" />
 
     </LinearLayout>
 

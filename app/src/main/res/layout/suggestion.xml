@@ -14,23 +14,62 @@
         android:text="生活建议"
         android:textColor="#fff"
         android:textSize="20sp"/>
-    <TextView
-        android:id="@+id/comfort_text"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:textColor="#fff"/>
-    <TextView
-        android:id="@+id/car_wash_text"
-        android:layout_width="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/tag_wind"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"/>
+        <TextView
+            android:id="@+id/comfort_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textColor="#fff"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:textColor="#fff"/>
-    <TextView
-        android:id="@+id/sport_text"
-        android:layout_width="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/tag_washcar"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"/>
+        <TextView
+            android:id="@+id/car_wash_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textColor="#fff"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:textColor="#fff"/>
+        android:orientation="horizontal" >
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/tag_run"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="15dp"/>
+        <TextView
+            android:id="@+id/sport_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textColor="#fff"/>
+    </LinearLayout>
+
 
 </LinearLayout>

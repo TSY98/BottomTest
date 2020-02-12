@@ -1,12 +1,15 @@
 package com.example.bottomtest.ui.home;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -28,13 +32,13 @@ import com.bumptech.glide.Glide;
 import com.example.bottomtest.MainActivity;
 import com.example.bottomtest.R;
 import com.example.bottomtest.ui.User;
+import com.example.bottomtest.ui.home.db.County;
 import com.example.bottomtest.ui.home.gson.Forecast;
 import com.example.bottomtest.ui.home.gson.Weather;
 import com.example.bottomtest.ui.home.service.AutoUpdateService;
 import com.example.bottomtest.ui.home.util.HttpUtil;
 import com.example.bottomtest.ui.home.util.Utility;
 import com.google.android.material.navigation.NavigationView;
-
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -43,6 +47,8 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class HomeFragment extends Fragment {
 
@@ -66,6 +72,7 @@ public class HomeFragment extends Fragment {
     public DrawerLayout drawerLayout;
     private Button navButton;
     private String bc_img;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -128,6 +135,7 @@ public class HomeFragment extends Fragment {
         if (all.size()==0 || all.get(0).getWeatherId()==null) {
             Intent intent = new Intent(getActivity(), WeatherMainActivity.class);
             startActivity(intent);
+            getActivity().finish();
         } else {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             String weatherString = prefs.getString("weather", null);
@@ -140,10 +148,13 @@ public class HomeFragment extends Fragment {
                 showWeatherMassage(weather);
             }else {
                 //为刷新准备
-                mWeatherId = getActivity().getIntent().getStringExtra("weather_id");
+                mWeatherId = all.get(all.size()-1).getWeatherId();
                 weatherLayout.setVisibility(View.INVISIBLE);
                 //向服务器请求
+
                 requestWeatherMassage(mWeatherId);
+
+
             }
             bc_img = prefs.getString("bc_Img", null);
         }
@@ -165,8 +176,12 @@ public class HomeFragment extends Fragment {
             loadBingPic();
         }
 
+
         return root;
     }
+
+
+
 
     public void requestWeatherMassage(final String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=11923c5a12234e07b873c4907151560a";
@@ -190,6 +205,7 @@ public class HomeFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         if (weather != null && "ok".equals(weather.status)) {
                             //放入缓存
                             SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
@@ -199,7 +215,8 @@ public class HomeFragment extends Fragment {
                             //显示
                             showWeatherMassage(weather);
                         }else {
-                            Toast.makeText(getActivity(), "获取天气信息失败", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(getActivity(), "获取天气信息失败!!", Toast.LENGTH_SHORT).show();
                         }
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -285,7 +302,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void jumpPage(){
-        Intent intent = new Intent(getActivity(), MainActivity.class);
+        Intent intent = new Intent(getActivity(), WeatherMainActivity.class);
         //intent.putExtra("showChoose", "1");
         SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
         edit.remove("weather");

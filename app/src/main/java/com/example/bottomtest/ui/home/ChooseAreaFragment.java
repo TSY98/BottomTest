@@ -3,6 +3,7 @@ package com.example.bottomtest.ui.home;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,14 +61,17 @@ public class ChooseAreaFragment extends Fragment {
     //进度条
     private ProgressDialog progressDialog;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_area, container, false);
+
+
         titleText = view.findViewById(R.id.title_text);
         backButton = view.findViewById(R.id.back_button);
         listView = view.findViewById(R.id.list_view);
-        adapter=new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,dataList);
+        adapter=new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
         return view;
     }
@@ -186,12 +190,13 @@ public class ChooseAreaFragment extends Fragment {
         controlProgressDialog(1);
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(Call call, final IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         controlProgressDialog(0);
                         Toast.makeText(getContext(),"加载失败",Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                     }
                 });
             }
