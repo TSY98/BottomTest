@@ -39,4 +39,5 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    implementation 'com.jph.takephoto:takephoto_library:4.0.3'
 }

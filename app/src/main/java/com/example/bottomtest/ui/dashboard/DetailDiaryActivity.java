@@ -1,7 +1,12 @@
 package com.example.bottomtest.ui.dashboard;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +18,8 @@ import com.example.bottomtest.R;
 import com.example.bottomtest.utils.CustomDialog;
 
 import org.litepal.crud.DataSupport;
+
+import java.io.File;
 
 
 /**
@@ -46,7 +53,19 @@ public class DetailDiaryActivity extends AppCompatActivity {
 
         date.setText(diaryContent.getDate());
         theme.setText(diaryContent.getTitle());
-        detail.setText(diaryContent.getContent());
+
+        String str=diaryContent.getContent();
+        SpannableString spannableString = new SpannableString(str);
+        for (int i = 0; i < str.length();i++) {
+            if (str.charAt(i) == '[') {
+                File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + diaryContent.getDate()+str.charAt(i+1) + ".jpg");
+                Uri uri = Uri.fromFile(file);
+                ImageSpan imageSpan = new ImageSpan(this, uri);
+                spannableString.setSpan(imageSpan,i,i+3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                i += 2;
+            }
+        }
+        detail.setText(spannableString);
 
         btn_back = findViewById(R.id.back_button);
         btn_back.setOnClickListener(new View.OnClickListener() {

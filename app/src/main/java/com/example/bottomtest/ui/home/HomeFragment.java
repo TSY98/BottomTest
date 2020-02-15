@@ -38,6 +38,7 @@ import com.example.bottomtest.ui.home.gson.Weather;
 import com.example.bottomtest.ui.home.service.AutoUpdateService;
 import com.example.bottomtest.ui.home.util.HttpUtil;
 import com.example.bottomtest.ui.home.util.Utility;
+import com.example.bottomtest.ui.personal.PersonalActivity;
 import com.google.android.material.navigation.NavigationView;
 import org.litepal.crud.DataSupport;
 
@@ -126,6 +127,17 @@ public class HomeFragment extends Fragment {
                 drawerLayout.closeDrawers();
                 //跳转
                 jumpPage();
+                return true;
+            }
+        });
+
+        navigationView.setCheckedItem(R.id.nav_personal);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                drawerLayout.closeDrawers();
+                Intent intent = new Intent(getContext(), PersonalActivity.class);
+                startActivity(intent);
                 return true;
             }
         });

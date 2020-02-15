@@ -21,7 +21,16 @@ public class DiaryContent extends DataSupport implements Serializable {
     //日期
     public Date temp = new Date(System.currentTimeMillis());
     public String date = format.format(temp);
+    //图片数量
+    private int count;
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public String getContent() {
         return content;

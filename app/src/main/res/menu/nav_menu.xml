@@ -10,9 +10,9 @@
             android:icon="@drawable/nav_changes"
             android:title="改变城市"/>
         <item
-            android:id="@+id/nav_xx"
+            android:id="@+id/nav_personal"
             android:icon="@drawable/nav_changes"
-            android:title="X"/>
+            android:title="个人中心"/>
         <item
             android:id="@+id/nav_xxx"
             android:icon="@drawable/nav_changes"

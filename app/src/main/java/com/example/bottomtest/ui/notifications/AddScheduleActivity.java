@@ -131,6 +131,10 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 }
                 scheduleInfo.setDate(chooseDate.getText().toString());
                 scheduleInfo.setRemind(remind);
+                if (remind) {
+                    scheduleInfo.setRemindTime(chooseTime.getText().toString());
+                }
+
                 scheduleInfo.setDone(false);
                 if(flag==1){
                     scheduleInfo.save();

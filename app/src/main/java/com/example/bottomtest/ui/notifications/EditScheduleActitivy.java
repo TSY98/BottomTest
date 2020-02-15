@@ -2,13 +2,16 @@ package com.example.bottomtest.ui.notifications;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,11 +33,12 @@ public class EditScheduleActitivy extends AppCompatActivity implements View.OnCl
     private RadioButton imp, mid, easy;
     private EditText remark;
     private SwitchButton switchButton;
-    private Button chooseDate;
+    private Button chooseDate,chooseTime;
     private Button back, done;
     Calendar calendar= Calendar.getInstance(Locale.CHINA);
     private int importance;
     private Boolean remind;
+    private LinearLayout setRemind;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +59,14 @@ public class EditScheduleActitivy extends AppCompatActivity implements View.OnCl
         easy = findViewById(R.id.edit_sche_radio_easy);
         remark = findViewById(R.id.edit_sche_remark);
         switchButton = findViewById(R.id.switch_button);
+        switchButton.setChecked(scheduleInfo.getRemind());
         chooseDate = findViewById(R.id.sche_edit_time);
+        chooseTime = findViewById(R.id.sche_edit_remind_time);
+        if (scheduleInfo.getRemind()) {
+            chooseTime.setText(scheduleInfo.getRemindTime());
+        }
+        setRemind = findViewById(R.id.set_remark);
+        setRemind.setVisibility(View.INVISIBLE);
         back = findViewById(R.id.edit_sche_back_button);
         done = findViewById(R.id.edit_sche_edit_done);
 
@@ -86,6 +97,17 @@ public class EditScheduleActitivy extends AppCompatActivity implements View.OnCl
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
                 //TODO do your job
                 remind=switchButton.isChecked();
+                if (remind) {
+                    setRemind.setVisibility(View.VISIBLE);
+                } else {
+                    setRemind.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+        chooseTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog(EditScheduleActitivy.this, 3, chooseTime, calendar);
             }
         });
 
@@ -109,6 +131,9 @@ public class EditScheduleActitivy extends AppCompatActivity implements View.OnCl
                 scheduleInfo.setDate(chooseDate.getText().toString());
                 scheduleInfo.setRemind(remind);
                 scheduleInfo.setImportance(importance);
+                if (remind) {
+                    scheduleInfo.setRemindTime(chooseTime.getText().toString());
+                }
                 if (flag == 1) {
                     //修改完成后直接返回详情页面
                     scheduleInfo.updateAll("mark=?", scheduleInfo.getMark());
@@ -159,7 +184,24 @@ public class EditScheduleActitivy extends AppCompatActivity implements View.OnCl
                 , calendar.get(Calendar.MONTH)
                 , calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
-
+    public static void showTimePickerDialog(Activity activity, int themeResId, final Button tv, Calendar calendar) {
+        // Calendar c = Calendar.getInstance();
+        // 创建一个TimePickerDialog实例，并把它显示出来
+        // 解释一哈，Activity是context的子类
+        new TimePickerDialog( activity,themeResId,
+                // 绑定监听器
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        tv.setText(hourOfDay + "时" + minute  + "分");
+                    }
+                }
+                // 设置初始时间
+                , calendar.get(Calendar.HOUR_OF_DAY)
+                , calendar.get(Calendar.MINUTE)
+                // true表示采用24小时制
+                ,true).show();
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

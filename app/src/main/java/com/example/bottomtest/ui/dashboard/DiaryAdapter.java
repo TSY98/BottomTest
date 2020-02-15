@@ -1,5 +1,7 @@
 package com.example.bottomtest.ui.dashboard;
 
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +57,16 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         DiaryContent diaryContent = mDiary.get(position);
         holder.title.setText(diaryContent.getTitle());
-        holder.content.setText(diaryContent.getContent());
+        String str=diaryContent.getContent();
+        SpannableString spannableString = new SpannableString(str);
+        for (int i = 0; i < str.length();i++) {
+            if (str.charAt(i) == '[') {
+                SpannableString ss = new SpannableString("图片");
+                spannableString.setSpan(ss,i+1,i+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                i += 3;
+            }
+        }
+        holder.content.setText(spannableString);
         holder.date.setText(diaryContent.getDate());
         holder.total.setOnClickListener(new View.OnClickListener() {
             @Override

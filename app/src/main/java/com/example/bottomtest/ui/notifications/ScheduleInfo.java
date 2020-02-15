@@ -32,6 +32,10 @@ public class ScheduleInfo extends DataSupport implements Serializable {
     //是否提醒
     private Boolean remind;
 
+    //提醒时间
+    private String remindTime;
+
+
     //构造函数
     public ScheduleInfo(){
 
@@ -91,5 +95,13 @@ public class ScheduleInfo extends DataSupport implements Serializable {
 
     public void setRemind(Boolean remind) {
         this.remind = remind;
+    }
+
+    public void setRemindTime(String remindTime) {
+        this.remindTime = remindTime;
+    }
+
+    public String getRemindTime() {
+        return remindTime;
     }
 }

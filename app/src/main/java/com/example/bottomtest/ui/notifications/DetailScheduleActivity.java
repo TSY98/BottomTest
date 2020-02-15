@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ public class DetailScheduleActivity extends AppCompatActivity {
     private TextView donePosition;
     private Button edit, delete, gonodone;
     private TextView editText, gonodoneText;
+    private LinearLayout remindTimeLayout;
+    private TextView remindTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,11 @@ public class DetailScheduleActivity extends AppCompatActivity {
         gonodoneText = findViewById(R.id.gonodoneText);
         editText = findViewById(R.id.eidtText);
 
+        remindTimeLayout = findViewById(R.id.remindTime);
+        remindTimeLayout.setVisibility(View.INVISIBLE);
+        remindTime = findViewById(R.id.show_sche_remindTime);
+
+
         //根据日程的完成与否显示不同的界面
         //完成的显示完成图标，并且没有编辑按钮，有设置成未完成按钮
         //未完成的显示未完成的图标，有编辑按钮
@@ -75,6 +83,11 @@ public class DetailScheduleActivity extends AppCompatActivity {
             gonodoneText.setVisibility(View.GONE);
             donetag.setVisibility(View.GONE);
             donePosition.setText("进行中");
+        }
+
+        if (scheduleInfo.getRemind()) {
+            remindTimeLayout.setVisibility(View.VISIBLE);
+            remindTime.setText(scheduleInfo.getRemindTime());
         }
 
         title.setText(scheduleInfo.getScheduleTitle());
