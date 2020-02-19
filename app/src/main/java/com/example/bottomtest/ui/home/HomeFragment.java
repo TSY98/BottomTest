@@ -31,6 +31,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.example.bottomtest.MainActivity;
 import com.example.bottomtest.R;
+import com.example.bottomtest.StartActivity;
 import com.example.bottomtest.ui.User;
 import com.example.bottomtest.ui.home.db.County;
 import com.example.bottomtest.ui.home.gson.Forecast;
@@ -73,6 +74,8 @@ public class HomeFragment extends Fragment {
     public DrawerLayout drawerLayout;
     private Button navButton;
     private String bc_img;
+
+    private String userId;
 
 
 
@@ -125,30 +128,30 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 drawerLayout.closeDrawers();
-                //跳转
-                jumpPage();
+                String s = menuItem.getTitle().toString();
+                if (s.equals("改变城市")) {
+                    //跳转
+                    jumpPage();
+
+                } else if (s.equals("个人中心")) {
+                    Intent intent = new Intent(getContext(), PersonalActivity.class);
+                    startActivity(intent);
+                }
+
                 return true;
             }
         });
 
-        navigationView.setCheckedItem(R.id.nav_personal);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                drawerLayout.closeDrawers();
-                Intent intent = new Intent(getContext(), PersonalActivity.class);
-                startActivity(intent);
-                return true;
-            }
-        });
+
 
 
         List<User> all = DataSupport.findAll(User.class);
         if (all.size()==0 || all.get(0).getWeatherId()==null) {
-            Intent intent = new Intent(getActivity(), WeatherMainActivity.class);
+            Intent intent = new Intent(getActivity(), StartActivity.class);
             startActivity(intent);
             getActivity().finish();
         } else {
+            userId = all.get(0).getUserId();
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             String weatherString = prefs.getString("weather", null);
             if (weatherString != null) {

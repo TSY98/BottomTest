@@ -93,9 +93,9 @@ public class ChooseAreaFragment extends Fragment {
                     showCounty();
                 } else if (currentLevel == LEVEL_COUNTY) {
                     String weatherId = countyList.get(position).getWeatherId();
-                    User user = new User();
-                    user.setWeatherId(weatherId);
-                    user.save();
+                    List<User> all = DataSupport.findAll(User.class);
+                    all.get(0).setWeatherId(weatherId);
+                    all.get(0).updateAll();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     //intent.putExtra("weather_id", weatherId);
                     startActivity(intent);

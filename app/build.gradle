@@ -18,6 +18,18 @@ android {
         }
     }
 }
+apply plugin: 'com.mob.sdk'
+MobSDK {
+    appKey "2e168dae16be0"
+    appSecret "7bd9a90b2b98e924231b42dee9800f99"
+
+    SMSSDK {
+        //默认使用GUI，若不使用GUI，通过以下开关关闭
+        //gui false
+        //若使用GUI的自动填充验证码功能，需打开此设置
+        //autoSMS true
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -40,4 +52,5 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     implementation 'com.jph.takephoto:takephoto_library:4.0.3'
+
 }

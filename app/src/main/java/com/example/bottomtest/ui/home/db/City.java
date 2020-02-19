@@ -8,6 +8,16 @@ public class City extends DataSupport {
     private int cityCode;
     private int provinceId;
 
+    public City() {
+    }
+
+    public City(City city) {
+        this.id = city.getId();
+        this.cityName = city.getCityName();
+        this.cityCode = city.getCityCode();
+        this.provinceId = city.getProvinceId();
+    }
+
     public int getId() {
         return id;
     }

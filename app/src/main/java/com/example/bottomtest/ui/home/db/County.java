@@ -8,6 +8,16 @@ public class County extends DataSupport {
     private String weatherId;
     private int cityId;
 
+    public County() {
+    }
+
+    public County(County county) {
+        this.id = county.getId();
+        this.countyName = county.getCountyName();
+        this.weatherId = county.getWeatherId();
+        this.cityId = county.getCityId();
+    }
+
     public int getId() {
         return id;
     }

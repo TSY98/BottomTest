@@ -7,6 +7,14 @@ public class Province extends DataSupport {
     private  String provinceName;
     private int provinceCode;
 
+    public Province() {
+    }
+    public Province(Province province) {
+        this.id = province.getId();
+        this.provinceName = province.getProvinceName();
+        this.provinceCode = province.getProvinceCode();
+    }
+
     public int getId() {
         return id;
     }

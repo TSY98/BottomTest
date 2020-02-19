@@ -56,13 +56,23 @@ public class DetailDiaryActivity extends AppCompatActivity {
 
         String str=diaryContent.getContent();
         SpannableString spannableString = new SpannableString(str);
+
         for (int i = 0; i < str.length();i++) {
+            String temp = "";
+
             if (str.charAt(i) == '[') {
-                File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + diaryContent.getDate()+str.charAt(i+1) + ".jpg");
+                int j;
+                for (j = i + 1; j < str.length(); j++) {
+                    if (str.charAt(j) == ']') {
+                        break;
+                    }
+                }
+                temp = str.substring(i + 1, j);
+                File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + diaryContent.getDate()+temp + ".jpg");
                 Uri uri = Uri.fromFile(file);
                 ImageSpan imageSpan = new ImageSpan(this, uri);
-                spannableString.setSpan(imageSpan,i,i+3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                i += 2;
+                spannableString.setSpan(imageSpan,i,j+1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                i = j + 1;
             }
         }
         detail.setText(spannableString);

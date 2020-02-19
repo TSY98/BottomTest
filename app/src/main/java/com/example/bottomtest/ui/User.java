@@ -6,6 +6,7 @@ public class User extends DataSupport {
     private String userId;
     private String userPassword;
     private String weatherId;
+    private String NickName;
 
     public String getUserId() {
         return userId;
@@ -29,5 +30,13 @@ public class User extends DataSupport {
 
     public void setWeatherId(String weatherId) {
         this.weatherId = weatherId;
+    }
+
+    public String getNickName() {
+        return NickName;
+    }
+
+    public void setNickName(String nickName) {
+        NickName = nickName;
     }
 }

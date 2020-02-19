@@ -84,7 +84,7 @@ public class WriteDairyActivity extends TakePhotoActivity {
         pickImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CropOptions cropOptions=new CropOptions.Builder().setAspectX(1).setAspectY(1).setWithOwnCrop(true).create();
+                final CropOptions cropOptions=new CropOptions.Builder().setAspectX(1).setAspectY(2).setWithOwnCrop(true).create();
                 file = new File(Environment.getExternalStorageDirectory(), "/temp/" + dateFormat+i + ".jpg");
                 if (!file.getParentFile().exists())
                     file.getParentFile().mkdirs();
