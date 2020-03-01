@@ -83,7 +83,7 @@
             <EditText
                 android:id="@+id/title_edit"
                 android:inputType="textPersonName"
-                android:text="水调歌头"
+                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"/>

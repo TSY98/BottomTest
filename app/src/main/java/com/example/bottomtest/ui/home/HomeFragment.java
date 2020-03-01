@@ -65,6 +65,7 @@ public class HomeFragment extends Fragment {
     private TextView sportText;
     private LinearLayout forecastLayout;
     private ScrollView weatherLayout;
+    private TextView navUserName;
 
     private ImageView bcImg;
 
@@ -123,7 +124,10 @@ public class HomeFragment extends Fragment {
         });
 
         NavigationView navigationView = root.findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_change);
+        View headerView = navigationView.getHeaderView(0);
+        navUserName = headerView.findViewById(R.id.nav_userName);
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -152,6 +156,7 @@ public class HomeFragment extends Fragment {
             getActivity().finish();
         } else {
             userId = all.get(0).getUserId();
+            navUserName.setText(all.get(0).getNickName());
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             String weatherString = prefs.getString("weather", null);
             if (weatherString != null) {

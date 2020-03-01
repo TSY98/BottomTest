@@ -1,5 +1,6 @@
 package com.example.bottomtest;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -134,6 +136,7 @@ public class StartActivity extends AppCompatActivity {
                     // TODO 利用国家代码和手机号码进行后续的操作
                     //Toast.makeText(StartActivity.this, phone, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(StartActivity.this, RegisterActivity.class);
+                    intent.putExtra("weather_id", selectedCounty.getWeatherId());
                     intent.putExtra("userPhone", phone);
                     startActivity(intent);
                 } else{
@@ -211,21 +214,25 @@ public class StartActivity extends AppCompatActivity {
         selectedProvinceName=splits[0].substring(0,splits[0].length()-1);
         selectedCityName = splits[1].substring(0, splits[1].length() - 1);
         selectedCountyName = splits[2].substring(0, splits[2].length() - 1);
+
 //        selectedCity.setCityName(splits[1].substring(0, splits[1].length() - 1));
 //        selectedCounty.setCountyName(splits[2].substring(0, splits[2].length() - 1));
         getProvince();
-        getCity();
-        getCounty();
+        //getCity();
+        //getCounty();
         //weatheridText.setText(String.valueOf(selectedCity.getId()));
     }
 
     public void getProvince() {
+        boolean b = false;
         String provinceName = selectedProvinceName;
         provinceList = DataSupport.findAll(Province.class);
         if (provinceList.size() > 0) {
             for (Province province : provinceList) {
+                Log.d("111", province.getProvinceName());
                 if (province.getProvinceName().equals(provinceName)) {
                     selectedProvince = new Province(province);
+                    b = true;
                     //Toast.makeText(StartActivity.this, ""+selectedProvince.getId(),Toast.LENGTH_LONG).show();
                     break;
                 }
@@ -236,24 +243,37 @@ public class StartActivity extends AppCompatActivity {
             //数据没有就从服务器获取
             queryFromServer(address,"province");
         }
+        if (b) {
+            getCity();
+        }
+
     }
 
     public void getCity() {
+        boolean b = false;
         String cityName = selectedCityName;
         cityList = DataSupport.where("provinceId=?", String.valueOf(selectedProvince.getId())).find(City.class);
         if (cityList.size() > 0) {
             for (City city : cityList) {
+                Log.d("3333", city.getCityName());
                 if (city.getCityName().equals(cityName)) {
                     selectedCity = new City(city);
+                    b = true;
                     //Toast.makeText(StartActivity.this, ""+city.getId(),Toast.LENGTH_LONG).show();
                     break;
                 }
             }
+
         }else {
             int provinceCode = selectedProvince.getProvinceCode();
             String address = "http:guolin.tech/api/china/"+provinceCode;
+            Log.d("5555", ""+provinceCode);
             //数据没有就从服务器获取
             queryFromServer(address,"city");
+        }
+
+        if (b) {
+            getCounty();
         }
     }
 
@@ -281,6 +301,7 @@ public class StartActivity extends AppCompatActivity {
     private void queryFromServer(String address, final String type) {
         //显示进度
 
+        Log.d("ddd", "daozhelile");
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

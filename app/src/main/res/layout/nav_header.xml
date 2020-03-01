@@ -10,20 +10,16 @@
         android:layout_height="70dp"
         android:src="@drawable/nav_touxiang"
         android:layout_centerInParent="true"/>
+
     <TextView
-        android:id="@+id/nav_mail"
-        android:layout_width="wrap_content"
+        android:id="@+id/nav_userName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="928205272@qq.com"
-        android:textColor="#fff"
-        android:textSize="14sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/nav_mail"
+        android:layout_below="@+id/icon_img"
         android:text="EatFish"
+        android:gravity="center"
         android:textColor="#fff"
-        android:textSize="14sp"/>
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"/>
 
 </RelativeLayout>

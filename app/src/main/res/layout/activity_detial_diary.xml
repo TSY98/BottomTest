@@ -66,7 +66,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+
+            >
 
             <TextView
                 android:id="@+id/dairyDate"
@@ -89,7 +91,7 @@
                 android:layout_marginTop="15dp"
                 android:textSize="22sp"
                 android:textStyle="normal|bold"
-                android:text="文字的意义"/>
+                android:text=""/>
 
             <TextView
                 android:id="@+id/detailText"
@@ -102,7 +104,7 @@
                 android:layout_marginEnd="16dp"
                 android:textSize="18sp"
                 android:lineSpacingExtra="3dp"
-                android:text="唐朝张怀作有《文字论》“论曰：文字者，总而为言。若分而为义，则文者祖父，字者子孙。察其物形，得其文理，故谓之曰文；母子相生，孽乳寝多，因名之为字。题於竹帛，则目之曰书。字之与书理亦归一因文也者，其道焕焉。日月星辰，天之文也；五岳四渎，地之文也；城阙翰仪，人之文也。文为用，相须而成，......”"/>
+                android:layout_marginBottom="45dp"/>
         </LinearLayout>
 
 
