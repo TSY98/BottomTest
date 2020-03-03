@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,12 +20,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bottomtest.MainActivity;
 import com.example.bottomtest.R;
+import com.example.bottomtest.ui.User;
+import com.example.bottomtest.ui.dashboard.WriteDairyActivity;
+import com.example.bottomtest.ui.home.util.HttpUtil;
 import com.suke.widget.SwitchButton;
 
+import org.litepal.crud.DataSupport;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * 增加新日程
@@ -139,15 +155,63 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                 if(flag==1){
                     scheduleInfo.save();
                     //跳转到显示界面
-//                    Intent intent = new Intent(AddScheduleActivity.this, WeatherMainActivity.class);
-//                    intent.putExtra("mainselected", "3");
-//                    startActivity(intent);
-                    Toast.makeText(AddScheduleActivity.this, "成功插入", Toast.LENGTH_LONG).show();
-                    finish();
+                    //Toast.makeText(AddScheduleActivity.this, "成功插入", Toast.LENGTH_LONG).show();
+                    uptoServer(scheduleInfo);
+                    //finish();
                 }
 
             }
         });
+
+    }
+
+    public void uptoServer(ScheduleInfo scheduleInfo) {
+        String userid = load();
+        int remind;
+        if (scheduleInfo.getRemind()) {
+            remind = 1;
+        } else {
+            remind = 0;
+        }
+        String address = "http://47.113.95.141:8080/oneday/schedule/add?markTime="+scheduleInfo.getMark()+"&userid="+userid+
+                "&importance="+scheduleInfo.getImportance()+"&remark="+scheduleInfo.getRemark()+"&event="+scheduleInfo.getScheduleTitle()
+                +"&eventdate="+scheduleInfo.getDate()+"&isremind="+remind+"&remindtime="+scheduleInfo.getRemindTime();
+        //Log.d("add", address);
+        HttpUtil.sendOkHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(AddScheduleActivity.this, "上传失败，可以在个人中心手动上传", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                finish();
+            }
+        });
+
+    }
+
+    public String load() {
+        FileInputStream in = null;
+        BufferedReader reader = null;
+        StringBuilder content = new StringBuilder();
+        try {
+            in = openFileInput("userid");
+            reader = new BufferedReader(new InputStreamReader(in));
+            content.append(reader.readLine());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (content.toString().isEmpty()) {
+            List<User> all = DataSupport.findAll(User.class);
+            return all.get(0).getUserId();
+        } else {
+            return content.toString();
+        }
 
     }
 

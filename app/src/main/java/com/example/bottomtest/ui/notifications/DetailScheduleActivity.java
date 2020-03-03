@@ -12,9 +12,22 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bottomtest.R;
+import com.example.bottomtest.ui.User;
+import com.example.bottomtest.ui.home.util.HttpUtil;
 import com.example.bottomtest.utils.CustomDialog;
 
 import org.litepal.crud.DataSupport;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * 查看详细内容功能
@@ -127,7 +140,8 @@ public class DetailScheduleActivity extends AppCompatActivity {
                     public void OnConfirm(CustomDialog dialog) {
                         DataSupport.deleteAll(ScheduleInfo.class, "mark=?", scheduleInfo.getMark());
                         Toast.makeText(DetailScheduleActivity.this,"删除成功",Toast.LENGTH_LONG).show();
-                        finish();
+                        uptoServer(scheduleInfo,1);
+                        //finish();
                     }
                 }).setCancle("取消", new CustomDialog.IonCancleListener() {
                     @Override
@@ -160,10 +174,11 @@ public class DetailScheduleActivity extends AppCompatActivity {
                         //注意使用setToDefault
                         scheduleInfo.setToDefault("isDone");
                         scheduleInfo.updateAll("mark=?", scheduleInfo.getMark());
-                        Intent intent1 = new Intent(DetailScheduleActivity.this, DetailScheduleActivity.class);
-                        intent1.putExtra("detailschedule", scheduleInfo);
-                        startActivity(intent1);
-                        finish();
+//                        Intent intent1 = new Intent(DetailScheduleActivity.this, DetailScheduleActivity.class);
+//                        intent1.putExtra("detailschedule", scheduleInfo);
+//                        startActivity(intent1);
+//                        finish();
+                        uptoServer(scheduleInfo,2);
                     }
                 }).setCancle("取消", new CustomDialog.IonCancleListener() {
                     @Override
@@ -182,4 +197,51 @@ public class DetailScheduleActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void uptoServer(ScheduleInfo scheduleInfo,int type) {
+        String userid = load();
+        String address;
+        if (type == 1) {
+            address = "http://47.113.95.141:8080/oneday/schedule/delete?markTime=" + scheduleInfo.getMark() + "&userid=" + userid;
+        } else {
+            address = "http://47.113.95.141:8080/oneday/schedule/changedone?markTime=" + scheduleInfo.getMark() + "&userid=" + userid + "&isdone=0";
+
+        }
+        HttpUtil.sendOkHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(DetailScheduleActivity.this,"未成功同步到服务器，可以在个人中心手动同步",Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                finish();
+            }
+        });
+
+    }
+
+    public String load() {
+        FileInputStream in = null;
+        BufferedReader reader = null;
+        StringBuilder content = new StringBuilder();
+        try {
+            in = openFileInput("userid");
+            reader = new BufferedReader(new InputStreamReader(in));
+            content.append(reader.readLine());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (content.toString().isEmpty()) {
+            List<User> all = DataSupport.findAll(User.class);
+            return all.get(0).getUserId();
+        } else {
+            return content.toString();
+        }
+    }
+
 }

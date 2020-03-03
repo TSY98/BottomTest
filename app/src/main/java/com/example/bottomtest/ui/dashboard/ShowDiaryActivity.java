@@ -16,6 +16,9 @@ import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 无用类
+ */
 public class ShowDiaryActivity extends AppCompatActivity {
 
     private RecyclerView showDiaryRV;

@@ -13,13 +13,13 @@ import java.util.Date;
  */
 
 public class DiaryContent extends DataSupport implements Serializable {
-    public static SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日   HH:mm:ss");
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日   HH:mm:ss");
     //内容
-    public String content;
+    private String content;
     //标题
     public String title;
     //日期
-    public Date temp = new Date(System.currentTimeMillis());
+    private Date temp = new Date(System.currentTimeMillis());
     public String date = format.format(temp);
     //图片数量
     private int count;

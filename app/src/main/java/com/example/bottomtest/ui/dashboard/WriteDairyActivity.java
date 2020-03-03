@@ -24,12 +24,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.bottomtest.R;
+import com.example.bottomtest.ui.User;
+import com.example.bottomtest.ui.home.util.HttpUtil;
 import com.jph.takephoto.model.CropOptions;
 import com.jph.takephoto.model.TResult;
 
+import org.litepal.crud.DataSupport;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * 写日记
@@ -47,6 +62,9 @@ public class WriteDairyActivity extends TakePhotoActivity {
     private Uri imageUri;
     private File file;
     public static int i=0;
+
+    private DiaryContent diaryContent;
+
 
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -72,7 +90,7 @@ public class WriteDairyActivity extends TakePhotoActivity {
         back = findViewById(R.id.back_button);
         pickImg = findViewById(R.id.add_diary_pickbtn);
 
-        final DiaryContent diaryContent = new DiaryContent();
+        diaryContent = new DiaryContent();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
 
         Date date = new Date(System.currentTimeMillis());
@@ -106,9 +124,14 @@ public class WriteDairyActivity extends TakePhotoActivity {
                     diaryContent.setContent(diaryEdit.getText().toString());
                     diaryContent.setCount(i);
                     diaryContent.save();
+                    try {
+                        uptoServer();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
 //                    Intent intent = new Intent(WriteDairyActivity.this, ShowDiaryActivity.class);
 //                    startActivity(intent);
-                    finish();
+                    //finish();
                 }
             }
         });
@@ -140,6 +163,50 @@ public class WriteDairyActivity extends TakePhotoActivity {
 
 
     }
+
+    public void uptoServer() throws UnsupportedEncodingException {
+
+        String userid = load();
+        //因为可能有[]这样的特殊字符，是tomcat设置的特殊字符，使用URL上传的时候需要进行编码
+        String content = java.net.URLEncoder.encode(diaryContent.getContent(), "utf-8");
+        String address = "http://47.113.95.141:8080/oneday/diary/add?insertdate=" + diaryContent.getDate() + "&userid=" + userid +
+                "&imgcount=" + diaryContent.getCount() + "&title=" + diaryContent.getTitle() + "&content=" + content;
+        HttpUtil.sendOkHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(WriteDairyActivity.this, "上传失败，可以在个人中心手动上传", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                finish();
+            }
+        });
+    }
+
+    public String load() {
+        FileInputStream in = null;
+        BufferedReader reader = null;
+        StringBuilder content = new StringBuilder();
+        try {
+            in = openFileInput("userid");
+            reader = new BufferedReader(new InputStreamReader(in));
+            content.append(reader.readLine());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (content.toString().isEmpty()) {
+            List<User> all = DataSupport.findAll(User.class);
+            return all.get(0).getUserId();
+        } else {
+            return content.toString();
+        }
+    }
+
 
     @Override
     public void OnTakeSuccess(TResult result) {

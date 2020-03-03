@@ -1,5 +1,6 @@
 package com.example.bottomtest.ui.notifications;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bottomtest.R;
+import com.example.bottomtest.ui.User;
+import com.example.bottomtest.ui.home.util.HttpUtil;
 
+import org.litepal.crud.DataSupport;
+
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 import static org.litepal.LitePalApplication.getContext;
 
@@ -91,6 +101,7 @@ public class ScheduleMsgIsDoneAdapter extends RecyclerView.Adapter<ScheduleMsgIs
                 //false是Boolean的默认值，不能使用set直接设置
                 scheduleInfo.setToDefault("isDone");
                 scheduleInfo.updateAll("mark=?", scheduleInfo.getMark());
+                uptoServer(scheduleInfo);
                 mScheduleMsgList.remove(position);
                 notifyItemRemoved(position);//刷新被删除的地方
                 notifyItemRangeChanged(position, getItemCount());
@@ -102,5 +113,24 @@ public class ScheduleMsgIsDoneAdapter extends RecyclerView.Adapter<ScheduleMsgIs
     @Override
     public int getItemCount() {
         return mScheduleMsgList.size();
+    }
+
+    public void uptoServer(ScheduleInfo scheduleInfo) {
+        List<User> all = DataSupport.findAll(User.class);
+        String userId = all.get(0).getUserId();
+        int done=0;
+        String address = "http://47.113.95.141:8080/oneday/schedule/changedone?markTime=" + scheduleInfo.getMark() + "&userid=" + userId + "&isdone=" + done;
+        //Log.d("ad", address);
+        HttpUtil.sendOkHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
     }
 }

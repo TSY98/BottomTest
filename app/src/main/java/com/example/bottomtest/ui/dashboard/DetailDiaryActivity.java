@@ -15,11 +15,23 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bottomtest.R;
+import com.example.bottomtest.ui.User;
+import com.example.bottomtest.ui.home.util.HttpUtil;
 import com.example.bottomtest.utils.CustomDialog;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 /**
@@ -97,8 +109,9 @@ public class DetailDiaryActivity extends AppCompatActivity {
                     public void OnConfirm(CustomDialog dialog) {
                         DataSupport.deleteAll(DiaryContent.class,"date=?",diaryContent.getDate());
                         Toast.makeText(DetailDiaryActivity.this,"删除成功",Toast.LENGTH_LONG).show();
-                        Intent intent1 = new Intent(DetailDiaryActivity.this, ShowDiaryActivity.class);
-                        startActivity(intent1);
+                        uptoServer(diaryContent);
+//                        Intent intent1 = new Intent(DetailDiaryActivity.this, ShowDiaryActivity.class);
+//                        startActivity(intent1);
                     }
                 }).setCancle("取消", new CustomDialog.IonCancleListener() {
                     @Override
@@ -123,6 +136,47 @@ public class DetailDiaryActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    public void uptoServer(DiaryContent diaryContent) {
+        String userid = load();
+        String address = "http://47.113.95.141:8080/oneday/diary/delete?insertdate=" + diaryContent.getDate() + "&userid=" + userid;
+        HttpUtil.sendOkHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(DetailDiaryActivity.this, "同步失败，可以在个人中心手动同步", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onResponse(Call call,Response response) throws IOException {
+                finish();
+            }
+        });
+    }
+
+
+    public String load() {
+        FileInputStream in = null;
+        BufferedReader reader = null;
+        StringBuilder content = new StringBuilder();
+        try {
+            in = openFileInput("userid");
+            reader = new BufferedReader(new InputStreamReader(in));
+            content.append(reader.readLine());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (content.toString().isEmpty()) {
+            List<User> all = DataSupport.findAll(User.class);
+            return all.get(0).getUserId();
+        } else {
+            return content.toString();
+        }
 
     }
 }

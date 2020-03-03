@@ -27,6 +27,10 @@ import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 日记列表
+ * 使用的是RecycleView中的staggeredGridLayoutManager
+ */
 public class DashboardFragment extends Fragment {
 
 
@@ -71,6 +75,13 @@ public class DashboardFragment extends Fragment {
         return root;
     }
 
+
+    /**
+     * 每次返回该界面都刷新列表
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -22,6 +22,10 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 
+/**
+ * 注册Activity
+ * 密码的正确性逻辑还未写
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private String userPhone;
@@ -63,6 +67,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 账户信息注册成功后，上传到服务器
+     * @param user
+     */
     public void uptoServer(User user) {
         String address = "http://47.113.95.141:8080/oneday/user/add?userid=" + user.getUserId() + "&password=" + pwd.getText() + "&nickname=" + user.getNickName() + "&weatherid=" + weather_id;
         HttpUtil.sendOkHttpRequest(address, new Callback() {

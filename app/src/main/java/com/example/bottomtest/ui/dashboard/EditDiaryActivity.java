@@ -24,10 +24,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.bottomtest.R;
+import com.example.bottomtest.ui.User;
+import com.example.bottomtest.ui.home.util.HttpUtil;
 import com.jph.takephoto.model.CropOptions;
 import com.jph.takephoto.model.TResult;
 
+import org.litepal.crud.DataSupport;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * 编辑日记
@@ -147,14 +162,65 @@ public class EditDiaryActivity extends TakePhotoActivity {
                 diaryContent.setCount(i);
                 diaryContent.updateAll("date=?", diaryContent.getDate());
                 //Intent intent1 = new Intent(EditDiaryActivity.this, ShowDiaryActivity.class);
-                Toast.makeText(EditDiaryActivity.this, "修改成功", Toast.LENGTH_LONG).show();
+                //Toast.makeText(EditDiaryActivity.this, "修改成功", Toast.LENGTH_LONG).show();
                 //startActivity(intent1);
-                finish();
+                //finish();
+                try {
+                    uptoServer(diaryContent);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
     }
 
+
+    public void uptoServer(DiaryContent diaryContent) throws UnsupportedEncodingException {
+
+        String userid = load();
+        //含有[]，使用URL上传的时候需要编码
+        String content = java.net.URLEncoder.encode(diaryContent.getContent(), "utf-8");
+
+        String address = "http://47.113.95.141:8080/oneday/diary/add?insertdate=" + diaryContent.getDate() + "&userid=" + userid +
+                "&imgcount=" + diaryContent.getCount() + "&title=" + diaryContent.getTitle() + "&content=" + content;
+        Log.d("address", address);
+        HttpUtil.sendOkHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Toast.makeText(EditDiaryActivity.this, "上传失败，可以在个人中心手动上传", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                finish();
+            }
+        });
+    }
+
+    public String load() {
+        FileInputStream in = null;
+        BufferedReader reader = null;
+        StringBuilder content = new StringBuilder();
+        try {
+            in = openFileInput("userid");
+            reader = new BufferedReader(new InputStreamReader(in));
+            content.append(reader.readLine());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (content.toString().isEmpty()) {
+            List<User> all = DataSupport.findAll(User.class);
+            return all.get(0).getUserId();
+        } else {
+            return content.toString();
+        }
+
+    }
 
     @Override
     public void OnTakeSuccess(TResult result) {

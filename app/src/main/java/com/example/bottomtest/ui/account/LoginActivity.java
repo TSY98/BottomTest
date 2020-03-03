@@ -2,6 +2,7 @@ package com.example.bottomtest.ui.account;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +19,11 @@ import com.example.bottomtest.ui.home.util.HttpUtil;
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 import okhttp3.Call;
@@ -57,8 +62,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public boolean confirm(String userid, String pwd) {
-        boolean result = false;
+    /**
+     * 账号密码验证函数
+     * @param userid
+     * @param pwd
+     */
+    public void confirm(final String userid, String pwd) {
         String address = "http://47.113.95.141:8080/oneday/user/confirm?userid=" + userid + "&password=" + pwd;
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
@@ -82,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                                 users.get(0).setWeatherId(weather_id);
                                 users.get(0).updateAll("userId=?", phone.getText().toString());
 
-
+                                saveUserid(userid);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("userId", phone.getText().toString());
                                 startActivity(intent);
@@ -99,7 +108,30 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-        return result;
+    }
+
+    /**
+     * 把userid存到一个文件里面
+     * @param userid
+     */
+    public void saveUserid(String userid) {
+        FileOutputStream out = null;
+        BufferedWriter writer = null;
+        try {
+            out = openFileOutput("userid", Context.MODE_PRIVATE);
+            writer = new BufferedWriter(new OutputStreamWriter(out));
+            writer.write(userid);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
