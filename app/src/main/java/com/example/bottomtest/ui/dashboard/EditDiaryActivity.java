@@ -59,7 +59,7 @@ public class EditDiaryActivity extends TakePhotoActivity {
 
     private Uri imageUri;
     private File file;
-    public static int i;
+    private int i;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {

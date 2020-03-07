@@ -52,6 +52,10 @@ public class DiaryContent extends DataSupport implements Serializable {
         return date;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getPointMassage(){
         return date + '\n' + title;
     }

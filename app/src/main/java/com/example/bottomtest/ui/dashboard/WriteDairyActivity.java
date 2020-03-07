@@ -61,7 +61,7 @@ public class WriteDairyActivity extends TakePhotoActivity {
 
     private Uri imageUri;
     private File file;
-    public static int i=0;
+    private int i=0;
 
     private DiaryContent diaryContent;
 

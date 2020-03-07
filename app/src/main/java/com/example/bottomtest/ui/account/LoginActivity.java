@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -68,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param pwd
      */
     public void confirm(final String userid, String pwd) {
-        String address = "http://47.113.95.141:8080/oneday/user/confirm?userid=" + userid + "&password=" + pwd;
+        final String address = "http://47.113.95.141:8080/oneday/user/confirm?userid=" + userid + "&password=" + pwd;
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -87,15 +89,55 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             boolean b = AccountUtil.comfrim(response.body().string());
                             if (b) {
-                                List<User> users = DataSupport.where("userId=?", phone.getText().toString()).find(User.class);
-                                users.get(0).setWeatherId(weather_id);
-                                users.get(0).updateAll("userId=?", phone.getText().toString());
 
-                                saveUserid(userid);
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.putExtra("userId", phone.getText().toString());
-                                startActivity(intent);
-                                finish();
+                                String address_diary = "http://47.113.95.141:8080/oneday/diary/all?userid=" + userid;
+                                HttpUtil.sendOkHttpRequest(address_diary, new Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
+                                        Toast.makeText(LoginActivity.this,"服务器连接失败",Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+                                        AccountUtil.syncDiary(response.body().string());
+                                    }
+                                });
+
+                                String address_schedule="http://47.113.95.141:8080/oneday/schedule/all?userid="+ userid;
+                                HttpUtil.sendOkHttpRequest(address_schedule, new Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
+                                        Toast.makeText(LoginActivity.this,"服务器连接失败",Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+                                        AccountUtil.syncSchedule(response.body().string());
+                                    }
+                                });
+
+
+                                String address = "http://47.113.95.141:8080/oneday/user/show?userid=" + userid;
+                                HttpUtil.sendOkHttpRequest(address, new Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
+                                        Toast.makeText(LoginActivity.this,"服务器连接失败",Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+                                        AccountUtil.login(response.body().string());
+                                        saveUserid(userid);
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtra("userId", phone.getText().toString());
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+
+
+
                             } else {
 
                                 Toast.makeText(LoginActivity.this,"账号或密码错误",Toast.LENGTH_SHORT).show();

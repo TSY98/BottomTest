@@ -4,23 +4,23 @@
         <item
             android:id="@+id/nav_sitting"
             android:icon="@drawable/nav_setting"
-            android:title="Sitting"/>
+            android:title="设置"/>
         <item
             android:id="@+id/nav_change"
             android:icon="@drawable/nav_changes"
             android:title="改变城市"/>
         <item
             android:id="@+id/nav_personal"
-            android:icon="@drawable/nav_changes"
+            android:icon="@drawable/ic_usercenter"
             android:title="个人中心"/>
         <item
             android:id="@+id/nav_xxx"
-            android:icon="@drawable/nav_changes"
-            android:title="XXX"/>
+            android:icon="@drawable/ic_sync"
+            android:title="同步"/>
         <item
             android:id="@+id/nav_xxxx"
-            android:icon="@drawable/nav_changes"
-            android:title="XXXX"/>
+            android:icon="@drawable/ic_changeuser"
+            android:title="切换账号"/>
     </group>
 
 </menu>

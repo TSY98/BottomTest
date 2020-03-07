@@ -60,7 +60,6 @@ public class RegisterActivity extends AppCompatActivity {
                 User user = new User();
                 user.setNickName(nickName.getText().toString());
                 user.setUserId(phoneText.getText().toString());
-                user.save();
                 uptoServer(user);
             }
         });

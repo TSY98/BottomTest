@@ -7,6 +7,7 @@ public class User extends DataSupport {
     private String userPassword;
     private String weatherId;
     private String NickName;
+    private String synctime;
 
     public String getUserId() {
         return userId;
@@ -38,5 +39,13 @@ public class User extends DataSupport {
 
     public void setNickName(String nickName) {
         NickName = nickName;
+    }
+
+    public String getSynctime() {
+        return synctime;
+    }
+
+    public void setSynctime(String synctime) {
+        this.synctime = synctime;
     }
 }

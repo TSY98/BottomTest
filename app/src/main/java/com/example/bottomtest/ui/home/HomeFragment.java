@@ -33,6 +33,7 @@ import com.example.bottomtest.MainActivity;
 import com.example.bottomtest.R;
 import com.example.bottomtest.StartActivity;
 import com.example.bottomtest.ui.User;
+import com.example.bottomtest.ui.account.LoginActivity;
 import com.example.bottomtest.ui.home.db.County;
 import com.example.bottomtest.ui.home.gson.Forecast;
 import com.example.bottomtest.ui.home.gson.Weather;
@@ -140,6 +141,10 @@ public class HomeFragment extends Fragment {
                 } else if (s.equals("个人中心")) {
                     Intent intent = new Intent(getContext(), PersonalActivity.class);
                     startActivity(intent);
+                } else if (s.equals("切换账号")) {
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
                 }
 
                 return true;
